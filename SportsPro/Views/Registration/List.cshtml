@@ -1,0 +1,52 @@
+﻿@model ProductListViewModel
+@{ ViewData["title"] = "Customer: " + ViewBag.selectedCustomer; }
+
+<h1>@ViewData["title"]</h1>
+<h1>Registrations</h1>
+
+@* Razor code block to specify a section *@
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+
+@* The technician doesn't have any incidents*@
+@if (!Model.HasProduct)
+{@* No Incidents Message *@
+<div>
+    <center>
+        <br>
+        <h5 style="height:75px; background-color: #F7F7F7; box-shadow: 0px 0px 3px 0px black; color: #C43000; line-height: 75px">
+            Oops, it looks like @(ViewBag.selectedCustomer) doesn't have any products registered.
+        </h5>
+        <br>
+        <a asp-action="Get" class="btn btn-primary" style="box-shadow: 0px 0px 3px 0px black">Switch Customer</a>
+    </center>
+</div> } @* The technician has at least one incident, show form*@
+@if (Model.HasProduct)
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="text-align:center">Product</th>
+                <th style="text-align:center">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Product product in Model.Products)
+            {
+                <tr>
+                    <td style="text-align:center">@product.Name</td>
+                    <td style="text-align:center">
+                        <a asp-action="Delete"
+                           asp-route-id="@product.ProductID"
+                           class="btn btn-danger" style="box-shadow: 0px 0px 3px 0px black">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br>
+    <a asp-action="Add" class="btn btn-success" style="box-shadow: 0px 0px 3px 0px black">Register</a>
+    <a asp-action="Get" class="btn btn-primary" style="box-shadow: 0px 0px 3px 0px black">Switch Customer</a>
+}

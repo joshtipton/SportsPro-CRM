@@ -1,0 +1,60 @@
+﻿@model IncidentListViewModel
+@{ ViewData["Title"] = "Incident Manager"; }
+@{ string controller = ViewContext.RouteData.Values["controller"].ToString();
+    string action = ViewContext.RouteData.Values["action"].ToString();
+    string Filter = ViewContext.RouteData.Values["Filter"]?.ToString();}
+
+<h1>@ViewData["Title"]</h1>
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+@section scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+}
+
+@* Bootstrap pills for incidents*@
+<nav class="nav nav-pills">
+    <a class="nav-item nav-link @(Filter = "All") @(ViewBag.Current == "All" ? "active" : "")" style="text-align: center; width: 125px; box-shadow: 0px 0px 0.5px 0px black"
+       asp-action="List" asp-route-Filter="@Filter">All</a>
+    <a class="nav-item nav-link @(Filter = "Unassigned") @(ViewBag.Current == "Unassigned" ? "active" : "")"  style="text-align: center; width: 125px; box-shadow: 0px 0px 0.5px 0px black"
+       asp-action="List" asp-route-Filter="@Filter">Unassigned</a>
+    <a class="nav-item nav-link @(Filter = "Open") @(ViewBag.Current == "Open" ? "active" : "")" style="text-align: center; width: 125px; box-shadow: 0px 0px 0.5px 0px black; "
+       asp-action="List" asp-route-Filter="@Filter">Open</a>
+    <input type="hidden" asp-for="@Filter" />
+</nav>
+
+<table class="table table-bordered table-striped" style="box-shadow: 0px 0px 0.5px 0px black">
+    <thead>
+        <tr>
+            <th style="text-align:center">Title</th>
+            <th style="text-align:center">Customer</th>
+            <th style="text-align:center">Product</th>
+            <th style="text-align:center">Date Opened</th>
+            <th style="text-align:center">Modify</th>
+            <th style="text-align:center">Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Incident incident in Model.Incidents)
+        {
+<tr>
+    <td style="text-align:center">@incident.Title</td>
+    <td style="text-align:center">@incident.Customer.FullName</td>
+    <td style="text-align:center">@incident.Product.Name</td>
+    <td style="text-align:center">@incident.DateOpened.ToShortDateString()</td>
+    <td style="text-align:center">
+        <a asp-action="Edit"
+           asp-route-id="@incident.IncidentID"
+           class="btn btn-info" style="box-shadow: 0px 0px 3px 0px black">Edit</a>
+    </td>
+    <td style="text-align:center">
+        <a asp-action="Delete"
+           asp-route-id="@incident.IncidentID"
+           class="btn btn-danger" style="box-shadow: 0px 0px 3px 0px black">Delete</a>
+    </td>
+</tr>}
+    </tbody>
+</table>
+<a asp-action="Add" class="btn btn-success" style="box-shadow: 0px 0px 3px 0px black">Add Incident</a>

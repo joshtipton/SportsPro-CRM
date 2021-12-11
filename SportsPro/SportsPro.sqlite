@@ -1,0 +1,7 @@
+CREATE TABLE PRODUCTS
+(
+   id INT IDENTITY(1,1) PRIMARY KEY,
+   product VARCHAR(50) UNIQUE,
+   quantity INT,
+   price DECIMAL(18,2)
+);

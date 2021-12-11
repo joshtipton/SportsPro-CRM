@@ -1,0 +1,52 @@
+﻿@model IncidentViewModel
+@{ string title = Model.Action + " Incident";
+    ViewData["Title"] = title; }
+
+
+<h1>@title</h1>
+
+@* Razor code block to specify a section *@
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+
+<form asp-action="Save" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="CurrentIncident.TechnicianID"> Technician: </label>
+        <label asp-for="CurrentIncident.TechnicianID"> @Model.CurrentIncident.Technician.Name </label>
+        <input type="hidden" asp-for="CurrentIncident.TechnicianID"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="CurrentIncident.CustomerID"> Customer: </label>
+        <label asp-for="CurrentIncident.CustomerID"> @Model.CurrentIncident.Customer.FullName </label>
+        <input type="hidden" asp-for="CurrentIncident.CustomerID"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="CurrentIncident.ProductID"> Product: </label>
+        <label asp-for="CurrentIncident.ProductID"> @Model.CurrentIncident.Product.Name </label>
+        <input type="hidden" asp-for="CurrentIncident.ProductID"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="CurrentIncident.Title"> Title: </label>
+        <label asp-for="CurrentIncident.Title"> @Model.CurrentIncident.Title </label>
+        <input type="hidden" asp-for="CurrentIncident.Title"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="CurrentIncident.DateOpened"> Date Opened: </label>
+        <label asp-for="CurrentIncident.DateOpened"> @Model.CurrentIncident.DateOpened </label>
+        <input type="hidden" asp-for="CurrentIncident.DateOpened"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="CurrentIncident.Description"> Description: </label>
+        <input asp-for="CurrentIncident.Description" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="CurrentIncident.DateClosed">Date Closed:</label>
+        <input type="date" asp-for="CurrentIncident.DateClosed" class="form-control">
+    </div>
+    <input type="hidden" asp-for="CurrentIncident.IncidentID" />
+    <button asp-type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="List" class="btn btn-primary">Cancel</a>
+</form>

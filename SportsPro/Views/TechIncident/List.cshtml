@@ -1,0 +1,58 @@
+﻿@model IncidentListViewModel
+@{ ViewData["title"] = "Technician: " + ViewBag.selectedTechnician; }
+
+<h1>@ViewData["title"]</h1>
+
+@* Razor code block to specify a section *@
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+
+
+@* The technician doesn't have any incidents*@
+@if (!Model.HasIncident)
+{@* No Incidents Message *@
+    <div>
+        <center>
+            <br>
+            <h5 style="height:75px; background-color: #F7F7F7; box-shadow: 0px 0px 3px 0px black; color: #C43000; line-height: 75px">
+                Oops, it looks like @(ViewBag.selectedTechnician) doesn't have any open incidents on file.
+            </h5>
+            <br>
+            <a asp-action="Get" class="btn btn-primary" style="box-shadow: 0px 0px 3px 0px black">Switch Technician</a>
+        </center>
+    </div> } @* The technician has at least one incident, show form*@
+@if (Model.HasIncident)
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="text-align:center">Title</th>
+                <th style="text-align:center">Customer</th>
+                <th style="text-align:center">Product</th>
+                <th style="text-align:center">Date Opened</th>
+                <th style="text-align:center">Modify</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Incident incident in Model.Incidents)
+            {
+                <tr>
+                    <td style="text-align:center">@incident.Title</td>
+                    <td style="text-align:center">@incident.Customer.FullName</td>
+                    <td style="text-align:center">@incident.Product.Name</td>
+                    <td style="text-align:center">@incident.DateOpened.ToShortDateString()</td>
+                    <td style="text-align:center">
+                        <a asp-action="Edit"
+                           asp-route-id="@incident.IncidentID"
+                           class="btn btn-info" style="box-shadow: 0px 0px 3px 0px black">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br>
+    <a asp-action="Get" class="btn btn-primary" style="box-shadow: 0px 0px 3px 0px black">Switch Technician</a>
+}
+

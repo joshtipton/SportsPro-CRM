@@ -1,0 +1,148 @@
+﻿@* Create the variables to get the route value of the requested view*@
+@{ string controller = ViewContext.RouteData.Values["controller"].ToString();
+string action = ViewContext.RouteData.Values["action"].ToString(); }
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SportsPro</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @*Used for Animations*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @* Insert the content from a section into the layout *@
+    @RenderSection("scripts", false)
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary" style="box-shadow: 0px 0px 15px 0px grey">
+            <a class="navbar-brand" href="/">SportsPro</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <nav class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav mr-auto">
+
+        @* Nav Bar - Setting the active navigation link based on selected controller*@
+                    <a class="nav-item nav-link 
+        @(controller == "Home" && action == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-item nav-link
+        @(controller == "Product" ? "active" : "")" asp-controller="Product" asp-action="List">Products</a>
+                    <a class="nav-item nav-link
+        @(controller == "Technician" ? "active" : "")" asp-controller="Technician" asp-action="List">Technicians</a>
+                    <a class="nav-item nav-link
+        @(controller == "Customer" ? "active" : "")" asp-controller="Customer" asp-action="List">Customers</a>
+                    <a class="nav-item nav-link
+        @(controller == "Incident" ? "active" : "")" asp-controller="Incident" asp-action="List">Incidents</a>
+                    <a class="nav-item nav-link
+        @(controller == "Registration" ? "active" : "")" asp-controller="Registration" asp-action="Get">Registrations</a>
+
+                </div>
+                <div class="navbar-nav navbar-right">
+                    <a class="nav-item nav-link
+        @(controller == "Home" && action=="About" ? "active" : "" )" asp-controller="Home" asp-action="About">About</a>
+                </div>
+            </nav>
+        </nav>
+    </header>
+
+        @* If TempData contains the key for a deleted product*@
+        @if (TempData.Keys.Contains("p-delmessage"))
+        {
+          @* Deletion Banner *@
+          <div id="fade"> 
+            <style>
+              h5 {
+                  color: white;
+                  background-color: #EF684B;
+                  width: 400px;
+                  height: 50px;
+                  margin: auto;
+                  box-shadow: 0px 1px 1px 0px grey;
+                 }
+            </style>
+            @* Fade Animation of Header*@
+            <script>
+              $("#fade").fadeOut(5000);
+            </script>
+            <center>
+              <h5>
+                  @TempData["p-delmessage"]
+              </h5>
+            </center>
+         </div>
+        }
+        @* If TempData contains the key for an added product*@
+        @if (TempData.Keys.Contains("p-addmessage"))
+        {
+          @* Addition Banner *@
+          <div id="fade"> 
+            <style>
+              h5 {
+                  color: white;
+                  background-color: #58B96B;
+                  width: 400px;
+                  height: 50px;
+                  margin: auto;
+                  box-shadow: 0px 1px 1px 0px grey;
+                 }
+            </style>
+            @* Fade Animation of Header*@
+            <script>
+              $("#fade").fadeOut(5000);
+            </script>
+            <center>
+              <h5>
+                  @TempData["p-addmessage"]
+              </h5>
+            </center>
+         </div>
+        }
+        @* If TempData contains the key for an edited product*@
+        @if (TempData.Keys.Contains("p-editmessage"))
+        {
+          @* Edit Banner *@
+          <div id="fade"> 
+            <style>
+              h5 {
+                  color: white;
+                  background-color: #B5BE73;
+                  width: 400px;
+                  height: 50px;
+                  margin: auto;
+                  box-shadow: 0px 1px 1px 0px grey;
+
+                 }
+            </style>
+            @* Fade Animation of Header*@
+            <script>
+              $("#fade").fadeOut(5000);
+            </script>
+            <center>
+              <h5>
+                  @TempData["p-editmessage"]
+              </h5>
+            </center>
+         </div>
+        }
+
+    <div class="container">
+        <main role="main" class="pb-5">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">&copy; @DateTime.Now.Year - SportsPro</div>
+    </footer>
+</body>
+</html>

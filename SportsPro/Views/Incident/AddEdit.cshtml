@@ -1,0 +1,71 @@
+﻿@model IncidentViewModel
+@{ string title = Model.Action + " Incident";
+    ViewData["Title"] = title; }
+
+
+<h1>@title</h1>
+
+@* Razor code block to specify a section *@
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+
+<form asp-action="Save" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="CurrentIncident.CustomerID">Customer</label>
+        @* asp-items tag helper replacing foreach loop*@
+        <select asp-for="CurrentIncident.CustomerID"
+                asp-items="@(new SelectList(Model.Customers, "CustomerID", "FullName", Model.CurrentIncident.CustomerID.ToString()))"
+                class="form-control">
+            <option value="">Select a customer...</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CurrentIncident.ProductID">Product</label>
+        @* asp-items tag helper replacing foreach loop*@
+        <select asp-for="CurrentIncident.ProductID"
+                asp-items="@(new SelectList(Model.Products, "ProductID", "Name", Model.CurrentIncident.ProductID.ToString()))"
+                class="form-control">
+            <option value="">Select a product...</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CurrentIncident.Title">Title</label>
+        <input asp-for="CurrentIncident.Title" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CurrentIncident.Description">Description</label>
+        <textarea asp-for="CurrentIncident.Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CurrentIncident.TechnicianID">Technician</label>
+        <select asp-for="CurrentIncident.TechnicianID"
+                asp-items="@(new SelectList(Model.Technicians,
+                         "TechnicianID", "Name",
+                         Model.CurrentIncident.TechnicianID.ToString()))"
+                class="form-control">
+            <option value="">Assign a technician....</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CurrentIncident.DateOpened">Date Opened</label>
+        <input type="date" asp-for="CurrentIncident.DateOpened" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CurrentIncident.DateClosed">Date Closed</label>
+        <input type="date" asp-for="CurrentIncident.DateClosed" class="form-control">
+    </div>
+
+    <input type="hidden" asp-for="CurrentIncident.IncidentID"/>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="List" class="btn btn-primary">Cancel</a>
+</form>
